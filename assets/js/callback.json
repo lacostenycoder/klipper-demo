@@ -1,0 +1,12 @@
+jsonCallback(
+      {
+          "sites":
+          [
+              {
+                  "siteName": "KLIPPERK",
+                  "domainName": "http://www.kimonolabs.com",
+                  "description": "Kimonolabs API for KlipperUSA"
+              }
+          ]
+      }
+  );

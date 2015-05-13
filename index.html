@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Klipper USA</title>
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400" rel="stylesheet">
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+    <link href="assets/css/styles.css" rel="stylesheet">
+  </head>
+  <body>
+
+<div class="pure-menu pure-menu-horizontal">
+  <a href="#" class="pure-menu-heading pure-menu-link"><img src="assets/images/logo.jpg" id="logo"/></a>
+  <ul class="pure-menu-list">
+      <li class="pure-menu-item"><a href="#" class="pure-menu-link">My Account</a></li>
+      <li class="pure-menu-item"><a href="#" class="pure-menu-link">Contact</a></li>
+      <li class="pure-menu-item"><a href="#" class="pure-menu-link">Cart</a></li>
+      <li class="pure-menu-item"><a href="#" class="pure-menu-link">Machines</a></li>
+      <li class="pure-menu-item"><a href="#" class="pure-menu-link">Strings</a></li>
+      <li class="pure-menu-item"><a href="#" class="pure-menu-link">Grips</a></li>
+      <li class="pure-menu-item"><a href="#" class="pure-menu-link">Accessories</a></li>
+  </ul>
+</div>
+
+    <ul class="products-list">
+				<script id="products-template" type="x-handlebars-template">​
+					{{#each this}}
+						<li data-index="{{id}}">
+							<a href="#" class="product-photo"><img src="{{image.src}}" height="130" alt="{{image.text}}"/></a>
+							<h2><a href="#"> {{image.text}} </a></h2>
+							<ul class="product-description">
+								<li><span>Manufacturer: </span>{{image.src}}</li>
+								// <li><span>Storage: </span>{{specs.storage}} GB</li>
+								// <li><span>OS: </span>{{specs.os}}</li>
+								// <li><span>Camera: </span>{{specs.camera}} Mpx</li>
+							</ul>
+							<button>Buy Now!</button>
+							// <p class="product-price">${{price}}</p>
+							<div class="highlight"></div>
+						</li>
+					{{/each}}
+				</script> 
+			</ul>
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.min.js"></script>
+      <script src="assets/js/script.js"></script>
+  </body>
+</html>
