@@ -97,8 +97,8 @@ $(function () {
 	// These are called on page load
 
 	// Get data about our products from products.json.
-
-  var url = 'https://www.kimonolabs.com/api/42tbt3m0?callback=?';
+// https://www.kimonolabs.com/api/8diyb3xa?apikey=GYMKOJ7U9cdnoSw2ZMxxWmWJevyCp6AK
+  var url = 'https://www.kimonolabs.com/api/8diyb3xa';
 
   $.ajax({
      type: 'GET',
@@ -114,7 +114,8 @@ $(function () {
         //  json.resutls = addIndex(json.results);
          products = json.results.collection1;
          //products = products.collection1;
-         products = addIndex(products);
+         //products = addIndex(products);
+				 //products = JSON.stringify(products);
          console.log(products);
         //  console.log(products[0]);
          // Call a function to create HTML for all the products.
@@ -226,22 +227,62 @@ $(function () {
 	function generateAllProductsHTML(data){
 		var list = $('.all-products .products-list');
 
-		var theTemplateScript = $("#products-template").html();
+		// var theTemplateScript = $("#products-template").html();
 		//Compile the template​
-		var theTemplate = Handlebars.compile (theTemplateScript);
-		$('.products-list').append (theTemplate(data));
+		// var theTemplate = Handlebars.compile (theTemplateScript);
+		//var products = data;
+		//console.log(data);
+		//var template = $('#template');
+
+		// var html = new EJS(template).render(data);
+		//var html;
+		//var template = $.ajax({
+									// 	type: "GET",
+									// 	url: '/products.ejs',
+									// 	dataType: "HTML",
+									// 	success: success
+									// });
+		//console.log(template);
+		// function success(){
+		// 	console.log("templated loaded via ajax");
+			generateTemplate()
+		// }
+
+		function success(){
+			// console.log('template loaded');
+			// console.log(template);
+			// console.log(data);
+			generateTemplate();
+		}
+
+		function generateTemplate(){
+			//console.log(data);
+			//html = template.render(data);
+			//var html = new EJS(data).render(data);
+			//var products = JSON.stringify(data);
+			var html = new EJS({url: 'products.ejs'}).render({products: products });
+			// var html = new EJS({url: 'products.ejs'}).render(products);
+			console.log(html);
+
+			// console.log("html: " + html);
+			$('.products-list').html(html);
+		}
+
+
+		//$('.products-list').append(html);
+		// $('.products-list').append (theTemplate(data));
 
 
 		// Each products has a data-index attribute.
 		// On click change the url hash to open up a preview for this product only.
 		// Remember: every hashchange triggers the render function.
-		list.find('li').on('click', function (e) {
-			e.preventDefault();
-
-			var productIndex = $(this).data('id');
-
-			window.location.hash = 'product/' + productIndex;
-		})
+		// list.find('li').on('click', function (e) {
+		// 	e.preventDefault();
+		//
+		// 	var productIndex = $(this).data('id');
+		//
+		// 	window.location.hash = 'product/' + productIndex;
+		// })
 	}
 
 	// This function receives an object containing all the product we want to show.
@@ -391,3 +432,42 @@ $(function () {
 
 	}
 });
+
+(function (window, document) {
+	var menu = document.getElementById('menu'),
+	    WINDOW_CHANGE_EVENT = ('onorientationchange' in window) ? 'orientationchange':'resize';
+
+	function toggleHorizontal() {
+	    [].forEach.call(
+	        document.getElementById('menu').querySelectorAll('.custom-can-transform'),
+	        function(el){
+	            el.classList.toggle('pure-menu-horizontal');
+	        }
+	    );
+	};
+
+	function toggleMenu() {
+	    // set timeout so that the panel has a chance to roll up
+	    // before the menu switches states
+	    if (menu.classList.contains('open')) {
+	        setTimeout(toggleHorizontal, 500);
+	    }
+	    else {
+	        toggleHorizontal();
+	    }
+	    menu.classList.toggle('open');
+	    document.getElementById('toggle').classList.toggle('x');
+	};
+
+	function closeMenu() {
+	    if (menu.classList.contains('open')) {
+	        toggleMenu();
+	    }
+	}
+
+	document.getElementById('toggle').addEventListener('click', function (e) {
+	    toggleMenu();
+	});
+
+	window.addEventListener(WINDOW_CHANGE_EVENT, closeMenu);
+})(this, this.document);
