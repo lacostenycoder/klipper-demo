@@ -10,7 +10,7 @@ html, button, input, select, textarea,
 }
 
 .product {
-  min-height: 400px;
+  min-height: 360px;
   margin: 10px 4px;
   background-color: #eee;
   border: solid #ccc;
