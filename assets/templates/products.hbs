@@ -1,0 +1,22 @@
+<div class="container-fluid">
+  <div class="row">
+    <!-- <div class="col-xs-12"> -->
+
+
+      {{#each products}}
+        <div class="col-md-4 text-center">
+          <div class="product col-xs-12">
+            <h4>Index: {{this.index}}</h4>
+            <a href="{{this.stringName.href}}"><h3 class="string-header">{{this.stringName.text}}</h3>
+              <div class="product-img" style="background-image: url({{this.image.src}})">
+                <!-- <img src="{{this.image.src}}" style="min-height: 138px;"/> -->
+              </div>
+            </a>
+            <p>Price: {{this.buyInfo.text}}</p>
+            <h4><a href="{{this.buyInfo.href}}">BuyNow!</a></h4>
+            </div>
+        </div>
+      {{/each}}
+    <!-- </div> -->
+  </div>
+</div>

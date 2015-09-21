@@ -97,12 +97,13 @@ $(function () {
 	// These are called on page load
 
 	// Get data about our products from products.json.
-
-  var url = 'https://www.kimonolabs.com/api/42tbt3m0?callback=?';
+// https://www.kimonolabs.com/api/8diyb3xa?apikey=GYMKOJ7U9cdnoSw2ZMxxWmWJevyCp6AK
+  var url = 'https://www.kimonolabs.com/api/8diyb3xa';
 
   $.ajax({
      type: 'GET',
       url: url,
+			cache: true,
       crossDomain: true,
       apikey: 'GYMKOJ7U9cdnoSw2ZMxxWmWJevyCp6AK',
       async: false,
@@ -110,16 +111,9 @@ $(function () {
       contentType: "application/json",
       dataType: 'jsonp',
       success: function(json) {
-         console.log(json.results);
-        //  json.resutls = addIndex(json.results);
          products = json.results.collection1;
-         //products = products.collection1;
-         products = addIndex(products);
-         console.log(products);
-        //  console.log(products[0]);
          // Call a function to create HTML for all the products.
          generateAllProductsHTML(products);
-
          // Manually trigger a hashchange to start the app.
          $(window).trigger('hashchange');
       },
@@ -134,19 +128,6 @@ $(function () {
     }
     return data;
   }
-
-	// $.getJSON( "//www.kimonolabs.com/api/42tbt3m0?apikey=GYMKOJ7U9cdnoSw2ZMxxWmWJevyCp6AK", function( data ) {
-  //
-	// 	// Write the data into our global variable.
-	// 	products = data;
-  //
-	// 	// Call a function to create HTML for all the products.
-	// 	generateAllProductsHTML(products);
-  //
-	// 	// Manually trigger a hashchange to start the app.
-	// 	$(window).trigger('hashchange');
-	// });
-
 
 	// An event handler with calls the render function on every hashchange.
 	// The render function will show the appropriate content of out page.
@@ -226,22 +207,25 @@ $(function () {
 	function generateAllProductsHTML(data){
 		var list = $('.all-products .products-list');
 
-		var theTemplateScript = $("#products-template").html();
-		//Compile the template​
-		var theTemplate = Handlebars.compile (theTemplateScript);
-		$('.products-list').append (theTemplate(data));
+		generateTemplate(data);
 
+		function generateTemplate(data){
+			var theTemplateScript = $.ajax({
+				type: 'GET',
+				url: 'assets/templates/products.hbs',
+				products: data,
+				dataType: 'text/string',
+				crossDomain: false,
+				async: false
+			});
+			theTemplateScript = theTemplateScript.responseText;
+			console.log(theTemplateScript);
 
-		// Each products has a data-index attribute.
-		// On click change the url hash to open up a preview for this product only.
-		// Remember: every hashchange triggers the render function.
-		list.find('li').on('click', function (e) {
-			e.preventDefault();
+			//Compile the template​
+			var theTemplate = Handlebars.compile(theTemplateScript);
+			$('.products-list').append(theTemplate({products: products}));
+		}
 
-			var productIndex = $(this).data('id');
-
-			window.location.hash = 'product/' + productIndex;
-		})
 	}
 
 	// This function receives an object containing all the product we want to show.
@@ -391,3 +375,42 @@ $(function () {
 
 	}
 });
+
+(function (window, document) {
+	var menu = document.getElementById('menu'),
+	    WINDOW_CHANGE_EVENT = ('onorientationchange' in window) ? 'orientationchange':'resize';
+
+	function toggleHorizontal() {
+	    [].forEach.call(
+	        document.getElementById('menu').querySelectorAll('.custom-can-transform'),
+	        function(el){
+	            el.classList.toggle('pure-menu-horizontal');
+	        }
+	    );
+	};
+
+	function toggleMenu() {
+	    // set timeout so that the panel has a chance to roll up
+	    // before the menu switches states
+	    if (menu.classList.contains('open')) {
+	        setTimeout(toggleHorizontal, 500);
+	    }
+	    else {
+	        toggleHorizontal();
+	    }
+	    menu.classList.toggle('open');
+	    document.getElementById('toggle').classList.toggle('x');
+	};
+
+	function closeMenu() {
+	    if (menu.classList.contains('open')) {
+	        toggleMenu();
+	    }
+	}
+
+	document.getElementById('toggle').addEventListener('click', function (e) {
+	    toggleMenu();
+	});
+
+	window.addEventListener(WINDOW_CHANGE_EVENT, closeMenu);
+})(this, this.document);
