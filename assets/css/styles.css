@@ -9,15 +9,31 @@ html, button, input, select, textarea,
     font-family: 'Raleway', sans-serif;
 }
 
+.product {
+  min-height: 400px;
+  margin: 10px 4px;
+  background-color: #eee;
+  border: solid #ccc;
+  border-radius: 1px;
+}
+
+.product-img {
+  display: inline-block;
+  height: 200px;
+  width: 200px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
 #logo{
   width: 80px;
   height: auto;
 }
 
-/*.pure-menu {
-  color: #FFFFFF;
-  background-color: #000;
-}*/
+.custom-brand {
+  margin-top: -4px;
+}
 
 .pure-menu-link {
   color: #000;
@@ -37,11 +53,13 @@ li {
   border-style: solid;
   border-color: #f2f2f2;
   margin-bottom:10px;
-  /*padding: 50px;*/
   text-align: center;
   text-decoration: none;
 }
 
+li.pure-menu-list a, a:hover{
+  text-decoration: none !important;
+}
 
 ul.product-description li {
   max-width: 100px;

@@ -103,6 +103,7 @@ $(function () {
   $.ajax({
      type: 'GET',
       url: url,
+			cache: true,
       crossDomain: true,
       apikey: 'GYMKOJ7U9cdnoSw2ZMxxWmWJevyCp6AK',
       async: false,
@@ -110,17 +111,9 @@ $(function () {
       contentType: "application/json",
       dataType: 'jsonp',
       success: function(json) {
-         console.log(json.results);
-        //  json.resutls = addIndex(json.results);
          products = json.results.collection1;
-         //products = products.collection1;
-         //products = addIndex(products);
-				 //products = JSON.stringify(products);
-         console.log(products);
-        //  console.log(products[0]);
          // Call a function to create HTML for all the products.
          generateAllProductsHTML(products);
-
          // Manually trigger a hashchange to start the app.
          $(window).trigger('hashchange');
       },
@@ -135,19 +128,6 @@ $(function () {
     }
     return data;
   }
-
-	// $.getJSON( "//www.kimonolabs.com/api/42tbt3m0?apikey=GYMKOJ7U9cdnoSw2ZMxxWmWJevyCp6AK", function( data ) {
-  //
-	// 	// Write the data into our global variable.
-	// 	products = data;
-  //
-	// 	// Call a function to create HTML for all the products.
-	// 	generateAllProductsHTML(products);
-  //
-	// 	// Manually trigger a hashchange to start the app.
-	// 	$(window).trigger('hashchange');
-	// });
-
 
 	// An event handler with calls the render function on every hashchange.
 	// The render function will show the appropriate content of out page.
@@ -227,62 +207,25 @@ $(function () {
 	function generateAllProductsHTML(data){
 		var list = $('.all-products .products-list');
 
-		// var theTemplateScript = $("#products-template").html();
-		//Compile the template​
-		// var theTemplate = Handlebars.compile (theTemplateScript);
-		//var products = data;
-		//console.log(data);
-		//var template = $('#template');
+		generateTemplate(data);
 
-		// var html = new EJS(template).render(data);
-		//var html;
-		//var template = $.ajax({
-									// 	type: "GET",
-									// 	url: '/products.ejs',
-									// 	dataType: "HTML",
-									// 	success: success
-									// });
-		//console.log(template);
-		// function success(){
-		// 	console.log("templated loaded via ajax");
-			generateTemplate()
-		// }
+		function generateTemplate(data){
+			var theTemplateScript = $.ajax({
+				type: 'GET',
+				url: 'assets/templates/products.hbs',
+				products: data,
+				dataType: 'text/string',
+				crossDomain: false,
+				async: false
+			});
+			theTemplateScript = theTemplateScript.responseText;
+			console.log(theTemplateScript);
 
-		function success(){
-			// console.log('template loaded');
-			// console.log(template);
-			// console.log(data);
-			generateTemplate();
+			//Compile the template​
+			var theTemplate = Handlebars.compile(theTemplateScript);
+			$('.products-list').append(theTemplate({products: products}));
 		}
 
-		function generateTemplate(){
-			//console.log(data);
-			//html = template.render(data);
-			//var html = new EJS(data).render(data);
-			//var products = JSON.stringify(data);
-			var html = new EJS({url: 'products.ejs'}).render({products: products });
-			// var html = new EJS({url: 'products.ejs'}).render(products);
-			console.log(html);
-
-			// console.log("html: " + html);
-			$('.products-list').html(html);
-		}
-
-
-		//$('.products-list').append(html);
-		// $('.products-list').append (theTemplate(data));
-
-
-		// Each products has a data-index attribute.
-		// On click change the url hash to open up a preview for this product only.
-		// Remember: every hashchange triggers the render function.
-		// list.find('li').on('click', function (e) {
-		// 	e.preventDefault();
-		//
-		// 	var productIndex = $(this).data('id');
-		//
-		// 	window.location.hash = 'product/' + productIndex;
-		// })
 	}
 
 	// This function receives an object containing all the product we want to show.
